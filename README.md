@@ -15,7 +15,7 @@
 
 <p align="center">
   <b>A Machine Learning project predicting passenger survival on the RMS Titanic using the Seaborn built-in dataset.</b><br>
-  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Trophy.png" width="20px" /> Best Accuracy: <b>80.34%</b> with Logistic Regression
+  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Trophy.png" width="20px" /> Best Accuracy: <b>81.46%</b> with Support Vector Machine (RBF)
 </p>
 
 <p align="center">
@@ -35,7 +35,7 @@
 
 The sinking of the **RMS Titanic** is one of the most infamous shipwrecks in history. On April 15, 1912, the Titanic sank after colliding with an iceberg, killing **1,502 out of 2,224** passengers and crew.
 
-This project applies **three classification algorithms** — Logistic Regression, K-Nearest Neighbors, and Naive Bayes — to the Seaborn Titanic dataset to predict passenger survival based on demographic and ticket information.
+This project applies **five classification algorithms** — Logistic Regression, K-Nearest Neighbors, Naive Bayes, Decision Tree, and Support Vector Machine — to the Seaborn Titanic dataset to predict passenger survival based on demographic and ticket information.
 
 ---
 
@@ -89,7 +89,7 @@ survived, pclass, sex, age, sibsp, parch, fare, embarked, alone
 ## ⚙️ Preprocessing
 
 - **Train-Test Split:** 80% train / 20% test (`random_state=42`)
-- **Scaling:** `StandardScaler` applied **only to KNN** (distance-based algorithm)
+- **Scaling:** `StandardScaler` applied to **KNN, Decision Tree, and SVM** (distance/kernel-based algorithms)
 - No feature engineering (FamilySize, Title extraction, etc.) was performed
 - No hyperparameter tuning was performed
 
@@ -97,13 +97,15 @@ survived, pclass, sex, age, sibsp, parch, fare, embarked, alone
 
 ## 🤖 Models Used
 
-Three classification models were trained and evaluated:
+Five classification models were trained and evaluated:
 
 | # | Model | Library | Scaling |
 |---|-------|---------|---------|
 | 1 | **Logistic Regression** | `sklearn.linear_model.LogisticRegression()` | None |
 | 2 | **K-Nearest Neighbors (k=5)** | `sklearn.neighbors.KNeighborsClassifier(n_neighbors=5)` | StandardScaler |
 | 3 | **Gaussian Naive Bayes** | `sklearn.naive_bayes.GaussianNB()` | None |
+| 4 | **Decision Tree** | `sklearn.tree.DecisionTreeClassifier()` | StandardScaler |
+| 5 | **Support Vector Machine (RBF)** | `sklearn.svm.SVC(kernel="rbf")` | StandardScaler |
 
 ---
 
@@ -113,13 +115,15 @@ Three classification models were trained and evaluated:
 
 | Rank | Model | Accuracy |
 |:----:|-------|:--------:|
-| 🥇 | **Logistic Regression** | **80.34%** |
-| 🥈 | K-Nearest Neighbors (k=5) | 78.09% |
-| 🥉 | Gaussian Naive Bayes | 77.53% |
+| 🥇 | **Support Vector Machine (RBF)** | **81.46%** |
+| 🥈 | Decision Tree | 80.90% |
+| 🥉 | Logistic Regression | 80.34% |
+| 4️⃣ | K-Nearest Neighbors (k=5) | 79.21% |
+| 5️⃣ | Gaussian Naive Bayes | 77.53% |
 
 ### Detailed Metrics
 
-#### Logistic Regression (Best Model)
+#### Logistic Regression
 ```
               precision    recall  f1-score   support
 
@@ -136,14 +140,14 @@ weighted avg       0.81      0.80      0.80       178
 ```
               precision    recall  f1-score   support
 
-           0       0.82      0.83      0.82       109
-           1       0.72      0.71      0.72        69
+           0       0.84      0.82      0.83       109
+           1       0.72      0.75      0.74        69
 
-    accuracy                           0.78       178
-   macro avg       0.77      0.77      0.77       178
-weighted avg       0.78      0.78      0.78       178
+    accuracy                           0.79       178
+   macro avg       0.78      0.79      0.78       178
+weighted avg       0.79      0.79      0.79       178
 ```
-**Confusion Matrix:** `[[90, 19], [20, 49]]`
+**Confusion Matrix:** `[[89, 20], [17, 52]]`
 
 #### Gaussian Naive Bayes
 ```
@@ -157,6 +161,32 @@ weighted avg       0.78      0.78      0.78       178
 weighted avg       0.78      0.78      0.78       178
 ```
 **Confusion Matrix:** `[[84, 25], [15, 54]]`
+
+#### Decision Tree
+```
+              precision    recall  f1-score   support
+
+           0       0.86      0.83      0.84       109
+           1       0.74      0.78      0.76        69
+
+    accuracy                           0.81       178
+   macro avg       0.80      0.80      0.80       178
+weighted avg       0.81      0.81      0.81       178
+```
+**Confusion Matrix:** `[[90, 19], [15, 54]]`
+
+#### Support Vector Machine — RBF (Best Model)
+```
+              precision    recall  f1-score   support
+
+           0       0.86      0.83      0.85       109
+           1       0.75      0.78      0.77        69
+
+    accuracy                           0.81       178
+   macro avg       0.80      0.81      0.81       178
+weighted avg       0.82      0.81      0.82       178
+```
+**Confusion Matrix:** `[[91, 18], [15, 54]]`
 
 ---
 
@@ -181,6 +211,13 @@ weighted avg       0.78      0.78      0.78       178
   <img src="screenshots/confusion_matrix.png" alt="Confusion Matrix" width="500">
   <br>
   <i>Logistic Regression performance on the test set (178 samples)</i>
+</p>
+
+### 4. Model Accuracy Comparison
+<p align="center">
+  <img src="screenshots/model_comparison.png" alt="Model Comparison" width="600">
+  <br>
+  <i>Accuracy comparison across all five classification models</i>
 </p>
 
 ---
@@ -251,9 +288,11 @@ Open `titanic_survival.ipynb` and run the cells step-by-step.
 
 ## 🚀 Future Improvements
 
+- [x] Add **Decision Tree** classifier
+- [x] Add **Support Vector Machine (SVM)** with RBF kernel
 - [ ] Add **Feature Engineering** (FamilySize, Title extraction, Age bins)
-- [ ] Implement **Hyperparameter Tuning** (GridSearchCV for KNN k-value)
-- [ ] Try additional models: **Random Forest**, **SVM**, **XGBoost**
+- [ ] Implement **Hyperparameter Tuning** (GridSearchCV for KNN k-value, SVM C/gamma)
+- [ ] Try additional models: **Random Forest**, **XGBoost**
 - [ ] Add **Cross-Validation** (K-Fold) for more robust evaluation
 - [ ] Deploy as a **Streamlit Web App** for interactive predictions
 - [ ] Generate **Kaggle-style submission CSV**
